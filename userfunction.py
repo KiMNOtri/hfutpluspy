@@ -1,6 +1,7 @@
 import loginfunction
 import tkinter
 import studentfunction
+import getpass
 
 '''
     和用户交互有关的功能都在这里
@@ -9,9 +10,9 @@ import studentfunction
 def loginfun(): 
     print("教务系统学号：")
     username = input()
-    print("教务系统密码：")
-    passwd = input()
-
+    print("教务系统密码：（输入内容不会显示）")
+    passwd = getpass.getpass()
+    
     backinfo = loginfunction.login(username,passwd)
 
     if(backinfo==-1):

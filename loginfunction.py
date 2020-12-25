@@ -16,6 +16,7 @@ from selenium import webdriver
 def login(username, password):
     url = 'http://jxglstu.hfut.edu.cn/eams5-student/login'
 
+    print("召唤 Safari 中 （macOS）")
     driver = webdriver.Safari()
     driver.get(url)
     

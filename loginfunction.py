@@ -1,5 +1,7 @@
 import time
 from selenium import webdriver
+import os
+
 
 '''
     ** 外置功能，作为模块调用无需此模块 **
@@ -15,6 +17,11 @@ from selenium import webdriver
 # 从教务系统登陆界面获取 cookie
 def login(username, password):
     url = 'http://jxglstu.hfut.edu.cn/eams5-student/login'
+
+    if(os.name=='nt'):
+        print("当前暂不支持 Windows (NT) ！")
+        
+        return -1
 
     print("召唤 Safari 中 （macOS）")
     driver = webdriver.Safari()

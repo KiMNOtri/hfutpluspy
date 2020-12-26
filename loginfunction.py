@@ -2,7 +2,6 @@ import time
 from selenium import webdriver
 import os
 
-
 '''
     ** 外置功能，作为模块调用无需此模块 **
 
@@ -60,6 +59,37 @@ def login(username, password):
     
 
     cookiesdata = {'session':sessiondata,'srv':srvdata}
+    cookie_savefunction(cookiesdata)
+
     return cookiesdata
 
-    
+# 保存 Cookie 信息
+def cookie_savefunction(cookie_data):
+
+
+    write_string = cookie_data['session'] + '/' + cookie_data['srv']
+
+    fo = open('cookiedata.archive','w')
+    fo.write(write_string)
+
+    fo.close()
+
+    return
+
+# 读取 Cookie 信息
+def cookie_readfunction():
+
+    if(not os.path.exists("cookiedata.archive")):
+        print("没有找到临时 Cookie 文件。")
+        return -1
+
+    fr = open('cookiedata.archive')
+    read_string = fr.read()
+
+    print(read_string)
+
+    cookiedata = read_string.split('/')
+
+    cookies = {'session':cookiedata[0],'srv':cookiedata[1]}
+
+    return cookies

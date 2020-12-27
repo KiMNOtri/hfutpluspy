@@ -2,7 +2,7 @@ import os
 import requests
 
 '''
-    用于存储临时的 Cookie 信息
+    用于存储各种临时信息
 
     Version 0.1.6~ Cookie 保存功能迁移至此
 
@@ -57,7 +57,9 @@ def VerifyCookieState(cookies):
         'Upgrade-Insecure-Requests':'1',
         'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.60'
     }
+
     resp = requests.get('http://jxglstu.hfut.edu.cn/eams5-student/home',headers=myheaders,allow_redirects=False)
+
 
     print(resp.status_code)
 
@@ -65,3 +67,4 @@ def VerifyCookieState(cookies):
         return False
     
     return True
+

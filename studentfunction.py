@@ -1,5 +1,7 @@
 import requests
 import re
+import sys
+import os
 
 class ScoreInfo:
     def __init__(self):
@@ -15,7 +17,9 @@ class ScoreDescrip:
     def __init__(self):
         self.semester = ''
         self.scoredata = list()
-    
+
+
+
 # 获取学生成绩单信息
 def GetStudentScore(session_value,srvid_value):
     print("正在获取重定向地址...")
@@ -102,7 +106,7 @@ def GetStudentScore(session_value,srvid_value):
     
     print(storage_data)
 
-    return result
+    return storage_data
 
 # 获取学生考试信息
 def GetStudentExams(session_value,srvid_value):
@@ -154,13 +158,29 @@ def GetStudentExams(session_value,srvid_value):
     print(my_text)
 
     result = re.findall(r'<td>(.*?)</td>',my_text,re.S)
+    time_result = re.findall(r'<td class="time">(.*?)</td>',my_text,re.S)
     print(result)
 
     for items in result:
-            items = items.replace('<br />',' ')
-            print(items)
+        items = items.replace('<br />',' ')
+        
 
-    return result
+    back_result = ""
+
+    i=0
+
+    while(i<len(time_result)):
+        back_result += result[4*i]
+        back_result += '/'
+        back_result += time_result[i]
+        back_result += '/'
+        back_result += result[i*4+1]
+        back_result += '?'
+        i=i+1
+
+    print(back_result)
+
+    return back_result
 
 # 获取学生课表信息
 def GetStudentClasses(session_value,srvid_value):
@@ -169,3 +189,18 @@ def GetStudentClasses(session_value,srvid_value):
     return
 
     
+def DeleteStudentInfomation():
+    print("🤔 确定要删除你的 Cookie 信息吗？你将需要重新登录。")
+    print("n:取消 y:确定")
+    
+    choose = input()
+
+    if(choose=='y'):
+        if os.path.exists("cookiedata.archive"):
+            os.remove("cookiedata.archive")
+            print("删除成功，重新启动程序后生效 😆")
+            sys.exit(0)
+        else:
+            print("啊嘞？")
+            return
+    return

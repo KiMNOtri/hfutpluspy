@@ -65,7 +65,8 @@ def login(username, password):
 
     return cookiesdata
 
-# 保存 Cookie 信息
+'''
+# 已经弃用
 def cookie_savefunction(cookie_data):
 
 
@@ -95,3 +96,5 @@ def cookie_readfunction():
     cookies = {'session':cookiedata[0],'srvid':cookiedata[1]}
 
     return cookies
+
+'''

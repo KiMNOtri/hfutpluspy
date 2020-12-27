@@ -185,7 +185,57 @@ def GetStudentExams(session_value,srvid_value):
 # 获取学生课表信息
 def GetStudentClasses(session_value,srvid_value):
 
+    print("正在获取重定向地址...")
+    
+    cookie_info = 'SESSION=' + session_value + '; SRVID=' + srvid_value
 
+    myheaders = {
+        'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+        'Accept-Encoding':'gzip, deflate',
+        'Accept-Language':'zh-TW,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        'Connection':'keep-alive',
+        'Cookie':cookie_info,
+        'Host':'jxglstu.hfut.edu.cn',
+        'Upgrade-Insecure-Requests':'1',
+        'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.60'
+    }
+    resp = requests.get('http://jxglstu.hfut.edu.cn/eams5-student/for-std/course-table/',headers=myheaders,allow_redirects=False)
+
+    print(resp.headers)
+
+    print("已经获取到信息，正在请求课表信息。")
+
+    request_url = resp.headers['Location']
+    print(request_url)
+
+    infomation = request_url.split('/')
+    student_scoreid = infomation[5]
+    print(student_scoreid)
+
+    score_requesturl = 'http://jxglstu.hfut.edu.cn/eams5-student/ws/schedule-table/datum'
+
+    request_headers = {
+        'Accept':'*/*',
+        'Accept-Encoding':'gzip, deflate',
+        'Accept-Language':'zh-TW,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        'Connection':'keep-alive',
+        'Content-Length':'175',
+        'Content-Type':'application/json',
+        'Cookie':cookie_info,
+        'Host':'jxglstu.hfut.edu.cn',
+        'Origin':'http://jxglstu.hfut.edu.cn',
+        'Referer':'http://jxglstu.hfut.edu.cn/eams5-student/for-std/course-table/info/'+student_scoreid,
+        'X-Requested-With':'XMLHttpRequest',
+        'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.60'
+    }
+
+    respond_data = requests.post(score_requesturl,request_headers)
+    
+    print(respond_data)
+    print(respond_data.content())
+    print(respond_data.text())
+
+    
     return
 
     

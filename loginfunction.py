@@ -1,6 +1,7 @@
 import time
 from selenium import webdriver
 import os
+import savestate
 
 '''
     ** 外置功能，作为模块调用无需此模块 **
@@ -58,8 +59,9 @@ def login(username, password):
     driver.close()
     
 
-    cookiesdata = {'session':sessiondata,'srv':srvdata}
-    cookie_savefunction(cookiesdata)
+    cookiesdata = {'session':sessiondata,'srvid':srvdata}
+    #cookie_savefunction(cookiesdata)
+    savestate.SaveCookieState(cookiesdata)
 
     return cookiesdata
 
@@ -67,7 +69,7 @@ def login(username, password):
 def cookie_savefunction(cookie_data):
 
 
-    write_string = cookie_data['session'] + '/' + cookie_data['srv']
+    write_string = cookie_data['session'] + '/' + cookie_data['srvid']
 
     fo = open('cookiedata.archive','w')
     fo.write(write_string)
@@ -90,6 +92,6 @@ def cookie_readfunction():
 
     cookiedata = read_string.split('/')
 
-    cookies = {'session':cookiedata[0],'srv':cookiedata[1]}
+    cookies = {'session':cookiedata[0],'srvid':cookiedata[1]}
 
     return cookies

@@ -3,9 +3,10 @@
 **⚠️注意：当前仅支持 macOS with Safari**
 
 ## 使用须知
-1. 当前版本仅支持 macOS , 自启动查询程序需要和另外的 macOS 本地程序配合（待开发）。
-2. 为了调用 `Safari` 浏览器登陆，需要开启 `Safari` 的开发者功能，启用 **允许远程自动化**。
-3. `Windows` 用户使用须知：（待完成）
+1. 从命令行形式启动 `main.py` ，从图形界面启动 `main_GUI.py`
+2. 当前版本仅支持 macOS , 自启动查询程序需要和另外的 macOS 本地程序配合（待开发）。
+3. 为了调用 `Safari` 浏览器登陆，需要开启 `Safari` 的开发者功能，启用 **允许远程自动化**。
+4. `Windows` 用户使用须知：（待完成）
 
 ## 当前功能
 * 📊 读取学生成绩，可以导出为 xlsx 表格文件
@@ -19,7 +20,16 @@
 
 ## 更新日志
 
-### Core Engine
+* Version 0.2.0
+
+    * 新增了暂存 Cookie 功能，无需反复登陆
+    * 成绩统计增加了按学期分类
+
+* Version 0.1.5
+
+    * 下个版本中，有关 Cookie 暂存的功能从 loginfunction 迁移至单独的 savestate
+    * 修正了部分错误，加强了稳定性
+    
 
 * Version 0.1.4
 
@@ -40,11 +50,6 @@
 
     挖了个大坑
 
-### User Interface
-
-* Version 0.1
-
-    * 增强稳定性
 
 ## 联系作者
 你可以通过 Github 中的 issue ，或者联系邮箱：kimnotri@icloud.com。

@@ -17,6 +17,10 @@
 
 ## 更新日志
 
+* Version 0.4.2
+
+    * 新增了 requirements.txt 供环境配置所需
+
 * Version 0.4.1
 
     * 现在可以输出成绩及考试信息文件为 JSON 封存档了

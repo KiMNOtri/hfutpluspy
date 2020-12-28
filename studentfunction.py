@@ -155,7 +155,6 @@ def GetStudentExams(session_value,srvid_value):
     
     my_text = respond_data.text
 
-    print(my_text)
 
     result = re.findall(r'<td>(.*?)</td>',my_text,re.S)
     time_result = re.findall(r'<td class="time">(.*?)</td>',my_text,re.S)
@@ -212,29 +211,27 @@ def GetStudentClasses(session_value,srvid_value):
     student_scoreid = infomation[5]
     print(student_scoreid)
 
-    score_requesturl = 'http://jxglstu.hfut.edu.cn/eams5-student/ws/schedule-table/datum'
+    score_requesturl = 'http://jxglstu.hfut.edu.cn/eams5-student/for-std/course-table/semester/114/print-data/'+student_scoreid
 
     request_headers = {
         'Accept':'*/*',
         'Accept-Encoding':'gzip, deflate',
         'Accept-Language':'zh-TW,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
         'Connection':'keep-alive',
-        'Content-Length':'175',
-        'Content-Type':'application/json',
         'Cookie':cookie_info,
         'Host':'jxglstu.hfut.edu.cn',
-        'Origin':'http://jxglstu.hfut.edu.cn',
-        'Referer':'http://jxglstu.hfut.edu.cn/eams5-student/for-std/course-table/info/'+student_scoreid,
+        'Referer':'http://jxglstu.hfut.edu.cn/eams5-student/for-std/course-table/semester/114/print/'+student_scoreid+'?',
         'X-Requested-With':'XMLHttpRequest',
         'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.60'
     }
 
-    respond_data = requests.post(score_requesturl,request_headers)
+    respond_data = requests.get(score_requesturl,headers=request_headers)
     
     print(respond_data)
-    print(respond_data.content())
-    print(respond_data.text())
+    json_data = respond_data.json()
+    print(json_data)
 
+    # 对课表的 JSON 信息进行解码
     
     return
 

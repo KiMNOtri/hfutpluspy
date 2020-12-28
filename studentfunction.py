@@ -99,17 +99,39 @@ def GetStudentScore(session_value,srvid_value):
         
         result_list.append(data_info)
 
-    storage_data = ''
+    storage_data = list()
 
     for items in result_list:
-        storage_data = storage_data + items.semester
-        storage_data = storage_data + '?'
+
+        dic_2 = {}
+        dic_2['semester'] = items.semester
+        scores_list = list()
+        
         for datas in items.scoredata:
-            storage_data = storage_data + datas.name+'/'+datas.id+'/'+datas.cla+'/'+datas.points+'/'+datas.gpa+'/'+datas.scores+'/'+datas.des
-            storage_data = storage_data + '#'
-        storage_data = storage_data + '\n'
+            dic_3 = {}    
+            dic_3['name'] = datas.name
+            dic_3['id'] = datas.id
+            dic_3['cla'] = datas.cla
+            dic_3['points'] = datas.points
+            dic_3['gpa'] = datas.gpa
+            dic_3['scores'] = datas.scores
+            dic_3['des'] = datas.des
+            scores_list.append(dic_3)
+            
+        dic_2['values'] = scores_list
+        
+        storage_data.append(dic_2)
     
     print(storage_data)
+
+    result_text = json.dumps(storage_data,ensure_ascii=False)
+
+
+    fo = open('scoredata.json','w',encoding='utf-8')
+    fo.write(result_text)
+
+    fo.close()
+
 
     return storage_data
 
@@ -169,20 +191,35 @@ def GetStudentExams(session_value,srvid_value):
         items = items.replace('<br />',' ')
         
 
-    back_result = ""
+    back_result = list()
 
     i=0
 
     while(i<len(time_result)):
-        back_result += result[4*i]
+        datas = {}
+        datas['subject'] = result[i*4]
+        datas['time'] = time_result[i]
+        datas['location'] = result[i*4+1]
+
+        back_result.append(datas)        
+        
+        '''back_result += result[4*i]
         back_result += '/'
         back_result += time_result[i]
         back_result += '/'
         back_result += result[i*4+1]
-        back_result += '?'
+        '''
         i=i+1
 
     print(back_result)
+
+    result_text = json.dumps(back_result,ensure_ascii=False)
+
+
+    fo = open('examdata.json','w',encoding='utf-8')
+    fo.write(result_text)
+
+    fo.close()
 
     return back_result
 
@@ -286,6 +323,8 @@ def GetStudentClasses(session_value,srvid_value):
 
         temp_eventdays = lessons['weeksStr']
         temp_event = re.split('~|,',temp_eventdays)
+
+        print(lessons['weekStr'])
 
 
         begin_week = int(temp_event[0])

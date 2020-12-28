@@ -1,9 +1,7 @@
 # 合工大教务轮子 Python Ver.
 
-**⚠️注意：当前仅支持 macOS with Safari**
-
 ## 使用须知
-1. 从命令行形式启动 `main.py` ，从图形界面启动 `main_GUI.py`
+1. 从命令行形式启动 `main.py` .
 2. 当前版本仅支持 macOS , 自启动查询程序需要和另外的 macOS 本地程序配合（待开发）。
 3. 为了调用 `Safari` 浏览器登陆，需要开启 `Safari` 的开发者功能，启用 **允许远程自动化**。
 4. Windows 默认使用 `Chrome` 进行登陆与获取 Cookie ,请确保已经提前部署了浏览器驱动。

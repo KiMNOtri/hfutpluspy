@@ -2,6 +2,11 @@ import requests
 import re
 import sys
 import os
+import json
+import random
+import calhelper
+from datetime import timedelta
+from datetime import datetime
 
 class ScoreInfo:
     def __init__(self):
@@ -232,6 +237,88 @@ def GetStudentClasses(session_value,srvid_value):
     print(json_data)
 
     # 对课表的 JSON 信息进行解码
+
+    events_list = list()
+    
+
+    jsondata_step1 = json_data['studentTableVm']
+    print(jsondata_step1['id'])
+    print(jsondata_step1['code'])
+    print(jsondata_step1['adminclass'])
+
+    jsondata_step2 = jsondata_step1['activities']
+
+    unit_list = {1:'080000',2:'095000',3:'101000',4:'120000',5:'140000',6:'155000',7:'160000',8:'175000',9:'190000',10:'200000',11:'215000'}
+
+    print("请输入学期开始时间，以YYYY/MM/DD形式输入：")
+    starttime = input()
+
+    dates = starttime.split('/')
+
+    date_start = datetime(int(dates[0]),int(dates[1]),int(dates[2]))
+    
+    i=1
+    clock_list = {}
+    
+    while(i<24):
+        #datestr = date_start.strftime('%Y%m%d')
+        #datestr = datestr.replace('-','')
+
+        #print(datestr)
+        clock_list[i]=date_start
+
+        date_start = date_start+timedelta(days=7)
+
+        i=i+1
+
+
+    for lessons in jsondata_step2:
+        cla_id = str(lessons['courseCode'])
+        cla_id = cla_id + str(random.randint(0,9999))
+        cla_name = str(lessons['courseName'])
+        cla_location = lessons['room']
+        
+        cla_starttime = ""
+        cla_endtime = ""
+        cla_teacher = 'null'
+
+        # 待处理，多日期情况，英语课情况 
+
+        temp_eventdays = lessons['weeksStr']
+        temp_event = re.split('~|,',temp_eventdays)
+
+
+        begin_week = int(temp_event[0])
+        if(len(temp_event)>1):
+            if(temp_event[1].isdigit()==True):
+                end_week = int(temp_event[1])
+            else:
+                end_week = int(temp_event[0])
+        else:
+            end_week = int(temp_event[0])
+
+        cla_looptype = end_week - begin_week + 1
+
+        temp_eventdate = clock_list[begin_week]
+        temp_where = int(lessons['weekday'])
+        temp_where = temp_where-1
+
+        temp_eventdate = temp_eventdate + timedelta(days=temp_where)
+        datestr = temp_eventdate.strftime('%Y%m%d')
+        datestr.replace('-','')
+
+        temp_startunit = lessons['startUnit']
+        temp_endunit = lessons['endUnit']
+
+        cla_starttime = datestr + 'T' + unit_list[temp_startunit]
+        cla_endtime = datestr + 'T' + unit_list[temp_endunit]
+
+        cal = calhelper.ClassEvent(cla_id,cla_name,cla_location,cla_teacher,cla_starttime,cla_endtime,cla_looptype)
+        events_list.append(cal)
+
+    calhelper.ClassWriter(events_list)
+        
+    print("🥳 生成课表完成，复制目录下的 Courses.ics 即可导入～")
     
     return
 

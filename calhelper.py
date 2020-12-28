@@ -3,7 +3,13 @@ import os
 '''
     用于辅助创日历的 .ics 文件，
     可以导入至手机日程表中。
+
+    ics时间格式：
+    2017 03 21 T 17 48 00
+
 '''
+
+
 
 class ClassEvent:
     def __init__(self):
@@ -51,14 +57,16 @@ def CourseGenerater(id,name,location,teacher,begin,end,looptype):
     string += "BEGIN:VEVENT\n"
     string += "SUMMARY:"+name+"\n"
     if(looptype!=-1):
-        string += "RRULE:FREQ=WEEKLY;COUNT="+looptype+"\n"
+        string += "RRULE:FREQ=WEEKLY;COUNT="+str(looptype)+"\n"
     string += "ORGANIZER;CN=My Calendar:mailto:tri.studio@outlook.com\n"
     string += "DTSTART;TZID=Asia/Shanghai:"+begin+"\n"
     string += "DTEND;TZID=Asia/Shanghai:"+end+"\n"
     string += "UID:"+id+"\n"
     string += "SEQUENCE:0\n"
-    string += "DESCRIPTION:授课教师："+teacher+"\n"
-    string += "LOCATION:"+location+"\n"
+    if(teacher!=None):
+        string += "DESCRIPTION:"+str(teacher)+"\n"
+    if(location!=None):
+        string += "LOCATION:"+str(location)+"\n"
     string += "STATUS:CONFIRMED\n"
 
 

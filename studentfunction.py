@@ -320,11 +320,12 @@ def GetStudentClasses(session_value,srvid_value):
         cla_teacher = 'null'
 
         # 待处理，多日期情况，英语课情况 
+        print(lessons['weeksStr'])
 
         temp_eventdays = lessons['weeksStr']
         temp_event = re.split('~|,',temp_eventdays)
 
-        print(lessons['weekStr'])
+        
 
 
         begin_week = int(temp_event[0])

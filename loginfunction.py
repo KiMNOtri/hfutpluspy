@@ -2,6 +2,7 @@ import time
 from selenium import webdriver
 import os
 import savestate
+import sys
 
 '''
     ** 外置功能，作为模块调用无需此模块 **
@@ -18,13 +19,20 @@ import savestate
 def login(username, password):
     url = 'http://jxglstu.hfut.edu.cn/eams5-student/login'
 
-    if(os.name=='nt'):
-        print("当前暂不支持 Windows (NT) ！")
+    try:
+        if(os.name=='nt'):
+            print("召唤 Chrome 中 （Windows）")
+            driver = webdriver.Chrome()
         
-        return -1
+        
+        if(os.name=='posix'):
+            print("召唤 Safari 中 （macOS）")
+            driver = webdriver.Safari()
 
-    print("召唤 Safari 中 （macOS）")
-    driver = webdriver.Safari()
+    except webdriver.WebDriverException as e:
+        print("调用浏览器功能失败了！请检查浏览器驱动，详情查阅 README.md.")
+        sys.exit(0)
+    
     driver.get(url)
     
     name_input = driver.find_element_by_id('u') 

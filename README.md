@@ -22,6 +22,10 @@
 
 ## 更新日志
 
+* Version 0.5.1(3)
+
+    * 追加了对浏览器登陆配置的提示功能   
+
 * Version 1.0.0 for Release on Windows
 
     * 基于 Version 0.5.1(3)

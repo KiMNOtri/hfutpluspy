@@ -74,7 +74,7 @@ def webviewhelper():
     else:
         os_type = 'Windows'
     
-    if(os_type = 'macOS'):
+    if(os_type == 'macOS'):
         print('当前你的系统为：'+os_type)
         print('建议使用 Safari 浏览器进行模拟登陆操作。')
         print('操作指引：打开 Safari 浏览器，在偏好设置面板中开启开发选项，在顶栏的开发者选单中激活「允许远程自动化」，重新运行程序即可。')

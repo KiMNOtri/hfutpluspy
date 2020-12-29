@@ -1,6 +1,5 @@
 # 合工大教务轮子 Python Ver.
 
-
 ## 使用须知
 1. 从命令行形式启动 `main.py` ，初次使用请按照 `requirements.txt` 安装依赖库。
 2. 支持 macOS/Windows , 自启动查询程序需要和另外的本地程序配合。

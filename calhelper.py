@@ -178,6 +178,11 @@ def CourseGenerater(id,name,location,teacher,begin,end,looptype):
         string += "LOCATION:"+str(location)+"\n"
     string += "STATUS:CONFIRMED\n"
 
+    string += "BEGIN:VALARM\n"
+    string += "UID:"+str(random.randint(0,9999999)) +"\n"
+    string += "TRIGGER:-PT5M\n"
+    string += "ACTION:AUDIO\n"
+    string += "END:VALARM\n"
 
     string += "END:VEVENT\n"
 

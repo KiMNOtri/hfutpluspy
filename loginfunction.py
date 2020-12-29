@@ -73,36 +73,3 @@ def login(username, password):
 
     return cookiesdata
 
-'''
-# 已经弃用
-def cookie_savefunction(cookie_data):
-
-
-    write_string = cookie_data['session'] + '/' + cookie_data['srvid']
-
-    fo = open('cookiedata.archive','w')
-    fo.write(write_string)
-
-    fo.close()
-
-    return
-
-# 读取 Cookie 信息
-def cookie_readfunction():
-
-    if(not os.path.exists("cookiedata.archive")):
-        print("没有找到临时 Cookie 文件。")
-        return -1
-
-    fr = open('cookiedata.archive')
-    read_string = fr.read()
-
-    print(read_string)
-
-    cookiedata = read_string.split('/')
-
-    cookies = {'session':cookiedata[0],'srvid':cookiedata[1]}
-
-    return cookies
-
-'''

@@ -66,6 +66,25 @@ def userfun():
             studentfunction.GetStudentClasses(backinfo['session'],backinfo['srvid'])
         if(letter=='4'):
             studentfunction.DeleteStudentInfomation()
+
+def webviewhelper():
+    os_type = ''
+    if(os.name=='posix'):
+        os_type = 'macOS'
+    else:
+        os_type = 'Windows'
+    
+    if(os_type == 'macOS'):
+        print('当前你的系统为：'+os_type)
+        print('建议使用 Safari 浏览器进行模拟登陆操作。')
+        print('操作指引：打开 Safari 浏览器，在偏好设置面板中开启开发选项，在顶栏的开发者选单中激活「允许远程自动化」，重新运行程序即可。')
+    else:
+        print('当前你的系统为：'+os_type)
+        print('建议使用 Chrome 浏览器进行模拟登陆操作。')
+        print('请将程序附赠的 chromedriver.exe 拷贝至 Chrome 根目录下，重新运行程序后再试。')
+        
+
+
         
 
 

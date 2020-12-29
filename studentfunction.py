@@ -271,10 +271,44 @@ def GetStudentClasses(session_value,srvid_value):
     
     print(respond_data)
     json_data = respond_data.json()
-    print(json_data)
+    print(json_data)            # json_data 为请求到的课表信息
 
-    # 对课表的 JSON 信息进行解码
+    date_requesturl = 'http://jxglstu.hfut.edu.cn/eams5-student/ws/semester/get/114'
 
+    date_headers = {
+        'Accept':'*/*',
+        'Accept-Encoding':'gzip, deflate',
+        'Accept-Language':'zh-TW,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6,zh-CN;q=0.5',
+        'Connection':'keep-alive',
+        'Cookie':cookie_info,
+        'Host':'jxglstu.hfut.edu.cn',
+        'Referer':'http://jxglstu.hfut.edu.cn/eams5-student/for-std/course-table/semester/114/print/'+student_scoreid+'?',
+        'X-Requested-With':'XMLHttpRequest',
+        'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.60'
+    }
+
+    respond_date = requests.get(date_requesturl,headers=date_headers)
+    date_json = respond_date.json()
+    date_startdate = date_json['startDate']
+    
+    print(date_startdate)           # date_startdate 为学期的开始时间
+
+    hp = calhelper.CourseHelper()
+    hp.SetStartDate(date_startdate)
+
+    jsondata_step1 = json_data['studentTableVm']
+    print(jsondata_step1['id'])
+    print(jsondata_step1['code'])
+    print(jsondata_step1['adminclass'])
+
+    jsondata_step2 = jsondata_step1['activities']
+
+    for items in jsondata_step2:
+        hp.InsertStringCourse(items['courseCode'],items['courseName'],items['room'],items['teachers'],items['lessonName'],items['lessonCode'],items['startUnit'],items['endUnit'],items['weekday'],items['weeksStr'])    
+    
+    hp.PrintCourse()
+
+    '''
     events_list = list()
     
 
@@ -359,7 +393,18 @@ def GetStudentClasses(session_value,srvid_value):
     calhelper.ClassWriter(events_list)
         
     print("🥳 生成课表完成，复制目录下的 Courses.ics 即可导入～")
+
+    '''
+
+
     
+    return
+
+
+# 调用生成单个课表日程
+def GenerateCourse():
+
+
     return
 
     

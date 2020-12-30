@@ -21,9 +21,14 @@ def login(username, password):
 
     try:
         if(os.name=='nt'):
-            print("召唤 Chrome 中 （Windows）")
-            driver = webdriver.Chrome()
-        
+            print("1.Chrome 2.Firefox")
+            inu = input()
+            if(inu=='1'):
+                print("召唤 Chrome 中 （Windows）")
+                driver = webdriver.Chrome()
+            else:
+                print("召唤 Firefox 中 （Windows）")
+                driver = webdriver.Firefox()
         
         if(os.name=='posix'):
             print("召唤 Safari 中 （macOS）")

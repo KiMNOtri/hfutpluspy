@@ -203,13 +203,37 @@ def GetStudentExams(session_value,srvid_value):
 
         back_result.append(datas)        
         
-        '''back_result += result[4*i]
-        back_result += '/'
-        back_result += time_result[i]
-        back_result += '/'
-        back_result += result[i*4+1]
-        '''
         i=i+1
+
+    writestring = "BEGIN:VCALENDAR\n"
+    writestring += "PRODID:-//Apple Inc.//Mac OS X 10.15.7//EN\n"
+    writestring += "VERSION:2.0\n"
+    writestring += "CALSCALE:GREGORIAN\n"
+    writestring += "METHOD:PUBLISH\n"
+    writestring += "X-WR-CALNAME:HFUTPlus 考试安排\n"
+    writestring += "X-WR-TIMEZONE:null\n"
+    for i in back_result:
+        writestring += "BEGIN:VEVENT\n"
+        writestring += "SUMMARY:"+i['subject']+" 考试\n"
+        writestring += "ORGANIZER;CN=My Calendar:mailto:tri.studio@outlook.com\n"
+        timezone = i['time'].split(' ')
+        datestring = timezone[0].replace('-','')
+        timestr = timezone[1].replace(':','')
+        betimestr = timestr.split('~')
+        writestring += "DTSTART;TZID=Asia/Shanghai:"+datestring+'T'+betimestr[0]+"00\n" 
+        writestring += "DTEND;TZID=Asia/Shanghai:"+datestring+'T'+betimestr[1]+"00\n"
+        writestring += "UID:"+str(random.randint(0,99999))+"\n"
+        writestring += "SEQUENCE:0\n"
+        writestring += "DESCRIPTION:\n"
+        writestring += "LOCATION:"+i['location']+"\n"
+        writestring += "STATUS:CONFIRMED\n"
+        writestring += "END:VEVENT\n"
+
+    writestring += "END:VCALENDAR"
+
+    fo = open("Exams.ics","w")
+    fo.write(writestring)
+    fo.close()   
 
     print(back_result)
 
@@ -220,7 +244,7 @@ def GetStudentExams(session_value,srvid_value):
     fo.write(result_text)
 
     fo.close()
-
+    print("🥰 考试日程已经输出至 Exams.ics")
     print("考试信息已归档于 examdata.json 中。")
 
     return result_text
@@ -255,7 +279,54 @@ def GetStudentClasses(session_value,srvid_value):
     student_scoreid = infomation[5]
     print(student_scoreid)
 
-    score_requesturl = 'http://jxglstu.hfut.edu.cn/eams5-student/for-std/course-table/semester/114/print-data/'+student_scoreid
+
+
+    print("正在获取学期信息....")
+
+    semesterheaders = {
+        'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+        'Accept-Encoding':'gzip, deflate',
+        'Accept-Language':'zh-TW,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6,zh-CN;q=0.5',
+        'Connection':'keep-alive',
+        'Cookie':cookie_info,
+        'Host':'jxglstu.hfut.edu.cn',
+        'Upgrade-Insecure-Requests':'1',
+        'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.60'
+    }
+    resp = requests.get('http://jxglstu.hfut.edu.cn/eams5-student/for-std/course-table/info/'+student_scoreid,headers=semesterheaders)
+
+    semester_str = resp.text
+    semester_result = re.findall(r'<select class="form-control selectize" name="allSemesters" id="allSemesters">(.*?)</select>',semester_str,re.S)
+
+    semester_repo = semester_result[0].split('\n')
+
+
+    semesterdic = {}
+    print("🤗 请选择要打印课表的学期代号：")
+    for items in semester_repo:
+
+        
+        if(len(items.strip())==0):   
+            continue
+        semidlist = re.findall(r'"(.*?)"',items,re.S)
+        sid = semidlist[0]
+        if(len(semidlist)!=1):
+            sid = semidlist[1]
+        
+        snamelist =  re.findall(r'>(.*?)<',items,re.S)
+        sname = snamelist[0]
+
+        semesterdic[sid] = sname
+        print(sid+":"+sname)        
+
+
+    
+    insm = input()
+    smid = insm
+
+
+
+    score_requesturl = 'http://jxglstu.hfut.edu.cn/eams5-student/for-std/course-table/semester/'+smid+'/print-data/'+student_scoreid
 
     request_headers = {
         'Accept':'*/*',
@@ -264,7 +335,7 @@ def GetStudentClasses(session_value,srvid_value):
         'Connection':'keep-alive',
         'Cookie':cookie_info,
         'Host':'jxglstu.hfut.edu.cn',
-        'Referer':'http://jxglstu.hfut.edu.cn/eams5-student/for-std/course-table/semester/114/print/'+student_scoreid+'?',
+        'Referer':'http://jxglstu.hfut.edu.cn/eams5-student/for-std/course-table/semester'+smid+'print/'+student_scoreid+'?',
         'X-Requested-With':'XMLHttpRequest',
         'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.60'
     }
@@ -275,7 +346,7 @@ def GetStudentClasses(session_value,srvid_value):
     json_data = respond_data.json()
     print(json_data)            # json_data 为请求到的课表信息
 
-    date_requesturl = 'http://jxglstu.hfut.edu.cn/eams5-student/ws/semester/get/114'
+    date_requesturl = 'http://jxglstu.hfut.edu.cn/eams5-student/ws/semester/get/'+smid
 
     date_headers = {
         'Accept':'*/*',
@@ -284,7 +355,7 @@ def GetStudentClasses(session_value,srvid_value):
         'Connection':'keep-alive',
         'Cookie':cookie_info,
         'Host':'jxglstu.hfut.edu.cn',
-        'Referer':'http://jxglstu.hfut.edu.cn/eams5-student/for-std/course-table/semester/114/print/'+student_scoreid+'?',
+        'Referer':'http://jxglstu.hfut.edu.cn/eams5-student/for-std/course-table/semester/'+smid+'/print/'+student_scoreid+'?',
         'X-Requested-With':'XMLHttpRequest',
         'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.60'
     }
@@ -320,6 +391,8 @@ def GenerateCourse():
 
 
     return
+
+
 
     
 def DeleteStudentInfomation():

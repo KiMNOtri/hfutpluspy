@@ -29,7 +29,7 @@ def login(username, password):
             print("召唤 Safari 中 （macOS）")
             driver = webdriver.Safari()
 
-    except webdriver.WebDriverException as e:
+    except Exception as e:
         print("调用浏览器功能失败了！请检查浏览器驱动，详情查阅 README.md.")
         sys.exit(0)
     

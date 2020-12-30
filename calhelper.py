@@ -14,6 +14,7 @@ from datetime import datetime
 
 class CourseHelper:
     def __init__(self):
+        self.calandername = 'HFUTPlus 课程表'
         self.courselist = list()
         self.startdate = None           # 这一学期的开始周星期一对应的日期,为一个 datetime 对象
         self.timeTable = {1:'080000',2:'095000',3:'101000',4:'120000',5:'140000',6:'155000',7:'160000',8:'175000',9:'190000',10:'195000',11:'215000',12:'220000'}

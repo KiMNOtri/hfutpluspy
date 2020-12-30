@@ -214,7 +214,7 @@ def GetStudentExams(session_value,srvid_value):
     writestring += "X-WR-TIMEZONE:null\n"
     for i in back_result:
         writestring += "BEGIN:VEVENT\n"
-        writestring += "SUMMARY:"+i['subject']+"\n"
+        writestring += "SUMMARY:"+i['subject']+" 考试\n"
         writestring += "ORGANIZER;CN=My Calendar:mailto:tri.studio@outlook.com\n"
         timezone = i['time'].split(' ')
         datestring = timezone[0].replace('-','')
@@ -279,7 +279,7 @@ def GetStudentClasses(session_value,srvid_value):
     student_scoreid = infomation[5]
     print(student_scoreid)
 
-    print("******************* Beta *******************")
+
 
     print("正在获取学期信息....")
 
@@ -325,8 +325,6 @@ def GetStudentClasses(session_value,srvid_value):
     smid = insm
 
 
-
-    print("******************* Beta *******************")
 
     score_requesturl = 'http://jxglstu.hfut.edu.cn/eams5-student/for-std/course-table/semester/'+smid+'/print-data/'+student_scoreid
 

@@ -21,9 +21,14 @@ def login(username, password):
 
     try:
         if(os.name=='nt'):
-            print("召唤 Chrome 中 （Windows）")
-            driver = webdriver.Chrome()
-        
+            print("1.Chrome 2.Firefox")
+            inu = input()
+            if(inu=='1'):
+                print("召唤 Chrome 中 （Windows）")
+                driver = webdriver.Chrome()
+            else:
+                print("召唤 Firefox 中 （Windows）")
+                driver = webdriver.Firefox()
         
         if(os.name=='posix'):
             print("召唤 Safari 中 （macOS）")
@@ -57,12 +62,22 @@ def login(username, password):
 
     print(driver.get_cookies())
 
-    cookies_infomation = driver.get_cookies()
-    my_sessionid = driver.get_cookies()[0]
-    my_srvid = driver.get_cookies()[1]
+    # 注意此处 Webkit 系浏览器和 Gecko 系表现不同，sessionid 和 srvid 的返回顺序有差异，会导致 Firefox 下的运行问题
 
-    sessiondata = my_sessionid['value']
-    srvdata = my_srvid['value']
+    cookies_infomation = driver.get_cookies()
+
+
+    for items in cookies_infomation:
+        if(items['name']=="SESSION"):
+            my_sessionid = items['value']
+        if(items['name']=="SRVID"):
+            my_srvid = items['value']
+
+    #my_sessionid = driver.get_cookies()[0]
+    #my_srvid = driver.get_cookies()[1]
+
+    sessiondata = my_sessionid
+    srvdata = my_srvid
 
     driver.close()
     

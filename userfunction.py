@@ -81,7 +81,7 @@ def webviewhelper():
     else:
         print('当前你的系统为：'+os_type)
         print('建议使用 Chrome 浏览器进行模拟登陆操作。')
-        print('请将程序附赠的 chromedriver.exe 拷贝至 Chrome 根目录下，重新运行程序后再试。')
+        print('请将程序附赠的 chromedriver.exe/geckodriver.exe 拷贝至 python.exe 的所在目录下，重新运行程序后再试。(请确定 Python 已经被添加至环境变量)')
         
 
 

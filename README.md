@@ -22,9 +22,13 @@
 
 ## 更新日志
 
+* Version 0.6.1
+
+    * 修复了在 Firefox 下可能无法正常获取资料的问题
+
 * Version 0.6.0(3)
 
-    * 加入 FireFox 支持
+    * 加入 Firefox 支持
 
 * Version 0.6.0(2)
 
